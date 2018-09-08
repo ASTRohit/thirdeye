@@ -24,7 +24,7 @@ function update(user) {
 	// body...
 }
 
-function delete(id) {
+function remove(id) {
 	// body...
 }
 
@@ -32,5 +32,5 @@ module.exports = {
 	insertUser: insert,
 	fetchUser: fetch,
 	updateUser: update,
-	deleteUser: delete
+	deleteUser: remove
 };

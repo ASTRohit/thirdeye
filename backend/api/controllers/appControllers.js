@@ -29,6 +29,7 @@ function login(req, res, next) {
 	userCtrl.fetchUser(username)
 		.then(function(data) {
 			if (data != undefined) {
+				console.log('Fetched data: '+JSON.stringify(data))
 				var reqPassword = util.createPassword(data.salt, password);
 				if (reqPassword == data.password) {
 					delete data['salt'];
