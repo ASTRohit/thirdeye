@@ -1,0 +1,29 @@
+{
+  "name": "thirdeye-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ASTRohit/thirdeye.git"
+  },
+  "author": "Rohit Chaskar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ASTRohit/thirdeye/issues"
+  },
+  "homepage": "https://github.com/ASTRohit/thirdeye#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "pg-promise": "^8.4.6"
+  }
+}
