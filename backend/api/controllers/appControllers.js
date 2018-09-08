@@ -4,12 +4,13 @@ var streamCtrl = require('./streamController');
 var mappingCtrl = require('./mappingController');
 
 var connection = require('../utility/connection');
+var db = connection.database;
 var util = require('../utility/util');
 
 function register(req, res, next) {
 	var user = req.body;
 	console.log('Register Request: '+JSON.stringify(user));
-	userCtrl.insertUser(connection,user)
+	userCtrl.insertUser(db, user)
 		.then(function () {
 			res	.status(201)
 		       	.json({
@@ -27,7 +28,7 @@ function login(req, res, next) {
 	var username = req.body.username;
 	var password = req.body.password;
 
-	userCtrl.fetchUser(connection,username)
+	userCtrl.fetchUser(db, username)
 		.then(function(data) {
 			if (data != undefined) {
 				console.log('Fetched data: '+JSON.stringify(data))
