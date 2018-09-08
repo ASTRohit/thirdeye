@@ -24,6 +24,7 @@
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "pg-promise": "^8.4.6"
+    "pg-promise": "^8.4.6",
+    "random-key": "^0.3.2"
   }
 }
