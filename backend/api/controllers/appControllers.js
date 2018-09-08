@@ -4,10 +4,10 @@ var stream = require('./streamController');
 var mapping = require('./mappingController');
 
 function register(req, res, next) {
-	req.parent_id = parseInt(req.parent_id);
-	req.status = parseInt(req.status);
-	req.is_admin = getBoolean(req.is_admin);
-	user.insertUser(req)
+	req.body.parent_id = parseInt(req.parent_id);
+	req.body.status = parseInt(req.status);
+	req.body.is_admin = getBoolean(req.is_admin);
+	user.insertUser(req.body)
 		.then(function () {
 			res
 				.status(200)
