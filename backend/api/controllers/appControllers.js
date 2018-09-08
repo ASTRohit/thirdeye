@@ -3,12 +3,13 @@ var locationCtrl = require('./locationController');
 var streamCtrl = require('./streamController');
 var mappingCtrl = require('./mappingController');
 
+var connection = require('../utility/connection');
 var util = require('../utility/util');
 
 function register(req, res, next) {
 	var user = req.body;
 	console.log('Register Request: '+JSON.stringify(user));
-	userCtrl.insertUser(user)
+	userCtrl.insertUser(connection,user)
 		.then(function () {
 			res	.status(201)
 		       	.json({
@@ -26,7 +27,7 @@ function login(req, res, next) {
 	var username = req.body.username;
 	var password = req.body.password;
 
-	userCtrl.fetchUser(username)
+	userCtrl.fetchUser(connection,username)
 		.then(function(data) {
 			if (data != undefined) {
 				console.log('Fetched data: '+JSON.stringify(data))

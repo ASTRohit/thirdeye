@@ -1,8 +1,8 @@
-var connection = require('../utility/connection');
+// var connection = require('../utility/connection');
 var util = require('../utility/util');
-var db = connection.database;
+// var db = connection.database;
 
-function insert(user){
+function insert(db, user){
 	user.salt = util.createSalt();
 	user.password = util.createPassword(user.salt, user.password);
 	var insertQuery='INSERT INTO third_eye.user_master(name, email, mobile, parent_id, is_admin, salt, password, status) '+
@@ -10,7 +10,7 @@ function insert(user){
 	return db.none(insertQuery,user);	
 }
 
-function fetch(username) {
+function fetch(db, username) {
 	var isMobile = /^\d{10}$/.test(username);
 	var fetchQuery = 'SELECT um.id, um.name, um.email, um.mobile, um.parent_id, um.is_admin, ' + 
 					 'um.salt, um.password, um.dt_created, um.dt_modified, um.dt_login, sm.status' + 
@@ -20,11 +20,11 @@ function fetch(username) {
 	return db.one(fetchQuery);
 }
 
-function update(user) {
+function update(db, user) {
 	// body...
 }
 
-function remove(id) {
+function remove(db, id) {
 	// body...
 }
 
