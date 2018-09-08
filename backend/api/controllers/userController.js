@@ -10,6 +10,27 @@ function insert(user){
 	return db.none(insertQuery,user);	
 }
 
+function fetch(username) {
+	var isMobile = /^\d{10}$/.test(username);
+	var fetchQuery = 'SELECT um.id, um.name, um.email, um.mobile, um.parent_id, um.is_admin, ' + 
+					 'um.salt, um.password, um.dt_created, um.dt_modified, um.dt_login, sm.status' + 
+					 'FROM third_eye.user_master as um' + 
+					 'JOIN third_eye.status_master as sm ON um.status = sm.id' + 
+					 'WHERE ' + isMobile?'um.mobile':'um.email' + '=' + username;
+	return db.one(fetchQuery);
+}
+
+function update(user) {
+	// body...
+}
+
+function delete(id) {
+	// body...
+}
+
 module.exports = {
-	insertUser: insert
+	insertUser: insert,
+	fetchUser: fetch,
+	updateUser: update,
+	deleteUser: delete
 };
