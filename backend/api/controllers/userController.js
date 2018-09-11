@@ -16,7 +16,12 @@ function fetch(db, username) {
 					 'um.salt, um.password, um.dt_created, um.dt_modified, um.dt_login, sm.status' + 
 					 'FROM third_eye.user_master AS um' + 
 					 'JOIN third_eye.status_master AS sm ON um.status = sm.id' + 
-					 'WHERE ' + isMobile?'um.mobile':'um.email' + '=' + username;
+					 'WHERE #criteria = ' + username;
+	if (isMobile) {
+		fetchQuery.replace('#criteria','um.mobile');
+	} else {
+		fetchQuery.replace('#criteria','um.email');
+	} 
 	console.log("Query : "+fetchQuery);
 	return db.one(fetchQuery);
 }
