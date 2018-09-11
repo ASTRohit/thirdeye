@@ -28,7 +28,7 @@ function fetch(db, username) {
 	}
 
 	console.log("Query : "+fetchQuery);
-	return db.one(fetchQuery);
+	return db.any(fetchQuery);
 }
 
 function update(db, user) {
