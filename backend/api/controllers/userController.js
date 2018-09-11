@@ -31,12 +31,16 @@ function fetch(db, username) {
 	return db.any(fetchQuery);
 }
 
-function update(db, user) {
-	// body...
+function update(db, user) {	
+	var updateQuery='UPDATE third_eye.user_master SET name=${name}, email=${email}, mobile=${mobile}, parent_id=${parent_id}, is_admin=${is_admin}, salt=${salt}, password=${password}, status=${status}) WHERE id =${id}';
+	console.log("Query : "+updateQuery);
+	return db.none(updateQuery,user);
 }
 
 function remove(db, id) {
-	// body...
+	var removeQuery = "DELETE FROM third_eye.user_master WHERE id = "+id;
+	console.log("Query : "+removeQuery);
+	return db.none(removeQuery);
 }
 
 module.exports = {
