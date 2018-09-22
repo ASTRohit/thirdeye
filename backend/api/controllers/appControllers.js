@@ -7,21 +7,64 @@ var connection = require('../utility/connection');
 var db = connection.database;
 var util = require('../utility/util');
 
-function register(req, res, next) {
-	var user = req.body;
-	console.log('Register Request: '+JSON.stringify(user));
-	userCtrl.insertUser(db, user)
-		.then(function (data) {
-			console.log('Return on insert : '+JSON.stringify(data));
-			res	.status(201)
-		       	.json({
-		          status: 'success',
-		          message: 'Registered'
-		      	 });
-		})
-		.catch(function(err){
-			return next(err);
-		});
+async function register(req, res, next) {
+	let request = req.body;
+	
+	var user = request.user;
+	var location = request.location;
+	var streams = request.streams;
+
+	try {
+		let userInsert = await userCtrl.insertUser(db, user);
+		user['id'] = parseInt(userInsert['id']);
+
+		let locationInsert = await locationCtrl.insertLocation(db, location);
+		location['id'] = parseInt(locationCtrl['id']);
+
+		let ulm = {
+			user_id: user['id'],
+			location_id: location['id']
+		}
+
+		await mappingCtrl.insertULM(ulm);
+
+		for (var i = 0; i < streams.length; i++) {
+			let stream = {
+				location_id: location['id'],
+				label: streams[i]['label'],
+				stream: streams[i]['stream']
+			}
+
+			let streamInsert = await streamCtrl.insertStream(stream);
+			streams[i]['id'] = parseInt(streamInsert['id']);
+
+			let usm = {
+				user_id: user['id'],
+				stream_id: streams[i]['id']
+			}
+
+			await mappingCtrl.insertUSM(usm);
+		}	
+
+		delete user['salt'];
+		delete user['password'];
+
+		let response = {
+			user: user,
+			location: location,
+			streams: streams
+		}
+
+		res	.status(201)
+		    .json({
+		        status: 'success',
+		        message: 'Registered',
+		        result: response
+		    });
+	} catch(err) {
+		console.log(err);
+		return next(err);
+	}
 }
 
 async function getAll(req,res, next) {

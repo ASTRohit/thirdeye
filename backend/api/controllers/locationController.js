@@ -17,7 +17,7 @@ function update(db, location) {
 	var updateQuery='UPDATE third_eye.location_master SET address=${address}, city=${city}, state=${state}, zipcode=${zipcode} WHERE id =${id}';
 	
 	console.log("Query : "+updateQuery);
-	return db.none(updateQuery,user);		
+	return db.none(updateQuery,location);		
 }
 
 function remove(db, id) {
