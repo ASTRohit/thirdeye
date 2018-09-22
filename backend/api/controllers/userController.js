@@ -36,7 +36,13 @@ async function fetchAll(db) {
 					 "JOIN third_eye.status_master AS sm ON um.status = sm.id;";	
 
 	console.log("Query : "+fetchQuery);
-	return await db.any(fetchQuery);
+	var data;
+	try {
+		data = await db.any(fetchQuery);
+	} catch(err) {
+		console.error(err);
+	}
+	return data;
 }
 
 function update(db, user) {
