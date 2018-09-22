@@ -24,8 +24,8 @@ function register(req, res, next) {
 		});
 }
 
-function getAll(req,res, next) {
-	let data = userCtrl.fetchAllUser(db);
+async function getAll(req,res, next) {
+	let data = await userCtrl.fetchAllUser(db);
 	console.log('Return on Async/Await : '+JSON.stringify(data))
 	res .status(200)
 		.json({
