@@ -25,14 +25,18 @@ function register(req, res, next) {
 }
 
 function getAll(req,res, next) {
-	var data = userCtrl.fetchAllUser(db);
-	console.log('Return on Async/Await : '+JSON.stringify(data))
-	res .status(200)
-		.json({
-			status: 'success',
-			result: data,
-		    message: ''
-		});
+	try {
+		let data = userCtrl.fetchAllUser(db);
+		console.log('Return on Async/Await : '+JSON.stringify(data))
+		res .status(200)
+			.json({
+				status: 'success',
+				result: data,
+			    message: ''
+			});
+	} catch(err) {
+		console.error(err);
+	}
 }
 
 function login(req, res, next) {
