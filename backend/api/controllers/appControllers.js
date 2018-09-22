@@ -22,7 +22,7 @@ async function register(req, res, next) {
 		console.log("User: "+JSON.stringify(user));
 
 		let locationInsert = await locationCtrl.insertLocation(db, location);
-		location['id'] = parseInt(locationCtrl['id']);
+		location['id'] = parseInt(locationInsert['id']);
 
 		console.log("Location: "+JSON.stringify(location));
 
