@@ -119,7 +119,7 @@ async function login(req, res, next) {
 
 				idList = idList + ')';
 
-				let streamData = await streamCtrl.fetch(db, idList);
+				let streamData = await streamCtrl.fetchStream(db, idList);
 
 				response = {
 					user: userData,
