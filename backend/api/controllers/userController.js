@@ -1,13 +1,11 @@
-// var connection = require('../utility/connection');
 var util = require('../utility/util');
-// var db = connection.database;
 
 function insert(db, user){
 	user.salt = util.createSalt();
 	user.password = util.createPassword(user.salt, user.password);
 	var insertQuery='INSERT INTO third_eye.user_master(name, email, mobile, parent_id, is_admin, salt, password, status) '+
-	'VALUES (${name}, ${email}, ${mobile}, ${parent_id}, ${is_admin}, ${salt}, ${password}, ${status});';
-	return db.none(insertQuery,user);	
+	'VALUES (${name}, ${email}, ${mobile}, ${parent_id}, ${is_admin}, ${salt}, ${password}, ${status}) RETURNING id;';
+	return db.one(insertQuery,user);	
 }
 
 function fetch(db, username) {
@@ -31,10 +29,18 @@ function fetch(db, username) {
 	return db.any(fetchQuery);
 }
 
-function update(db, user) {	
-	var updateQuery='UPDATE third_eye.user_master SET name=${name}, email=${email}, mobile=${mobile}, parent_id=${parent_id}, is_admin=${is_admin}, salt=${salt}, password=${password}, status=${status}) WHERE id =${id}';
+function update(db, user) {
+	var updateQuery='';
+	if (user.password != undefined && user.password != '') {
+		user.salt = util.createSalt();
+		user.password  = util.createPassword(user.salt, user.password);
+		updateQuery='UPDATE third_eye.user_master SET name=${name}, email=${email}, mobile=${mobile}, parent_id=${parent_id}, is_admin=${is_admin}, salt=${salt}, password=${password}, status=${status} WHERE id =${id}';
+	} else {
+		updateQuery='UPDATE third_eye.user_master SET name=${name}, email=${email}, mobile=${mobile}, parent_id=${parent_id}, is_admin=${is_admin}, status=${status} WHERE id =${id}';		
+	}
+
 	console.log("Query : "+updateQuery);
-	return db.none(updateQuery,user);
+	return db.none(updateQuery,user);		
 }
 
 function remove(db, id) {

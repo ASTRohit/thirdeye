@@ -11,7 +11,8 @@ function register(req, res, next) {
 	var user = req.body;
 	console.log('Register Request: '+JSON.stringify(user));
 	userCtrl.insertUser(db, user)
-		.then(function () {
+		.then(function (data) {
+			console.log('Return on insert : '+JSON.stringify(data));
 			res	.status(201)
 		       	.json({
 		          status: 'success',
@@ -59,6 +60,42 @@ function login(req, res, next) {
 		          		message: 'Unable to login with provided credentials'
 					});
 			}			
+		})
+		.catch(function(err){
+			return next(err);
+		});
+}
+
+function updateProfile(req, res, next){
+	var user = req.body;
+	console.log('Update Profile Request: '+JSON.stringify(user));
+	userCtrl.updateUser(db,user)
+		.then(function() {
+			userCtrl.fetchUser(db, username)
+				.then(function(data) {
+					if (data != undefined && data.length>0) {
+						data = data[0];
+						console.log('Fetched data: '+JSON.stringify(data));
+						delete data['salt'];
+						delete data['password'];
+						res .status(200)
+							.json({
+								status: 'success',
+								result: data,
+				          		message: ''
+							});
+					} else {
+						res .status(403)
+							.json({
+								status: 'fail',
+								result: null,
+				          		message: 'User does not found'
+							});
+					}			
+				})
+				.catch(function(err){
+					return next(err);
+				});
 		})
 		.catch(function(err){
 			return next(err);
