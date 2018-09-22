@@ -2,8 +2,8 @@ var util = require('../utility/util');
 
 function insertULM(db, ulm){	
 	var insertQuery='INSERT INTO third_eye.user_location_map(user_id, location_id) '+
-	'VALUES (${user_id}, ${location_id})  RETURNING id;';
-	return db.one(insertQuery,ulm);	
+	'VALUES (${user_id}, ${location_id});';
+	return db.none(insertQuery,ulm);	
 }
 
 function fetchULM(db, key, id) {
@@ -21,8 +21,8 @@ function removeULM(db, key, id) {
 
 function insertUSM(db, usm){	
 	var insertQuery='INSERT INTO third_eye.user_stream_map(user_id, stream_id) '+
-	'VALUES (${user_id}, ${stream_id})  RETURNING id;';
-	return db.one(insertQuery,usm);	
+	'VALUES (${user_id}, ${stream_id})';
+	return db.none(insertQuery,usm);	
 }
 
 function fetchUSM(db, key, id) {

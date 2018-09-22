@@ -26,7 +26,7 @@ async function register(req, res, next) {
 			location_id: location['id']
 		}
 
-		await mappingCtrl.insertMapULM(ulm);
+		await mappingCtrl.insertMapULM(db, ulm);
 
 		for (var i = 0; i < streams.length; i++) {
 			let stream = {
@@ -43,7 +43,7 @@ async function register(req, res, next) {
 				stream_id: streams[i]['id']
 			}
 
-			await mappingCtrl.insertMapUSM(usm);
+			await mappingCtrl.insertMapUSM(db, usm);
 		}	
 
 		delete user['salt'];
