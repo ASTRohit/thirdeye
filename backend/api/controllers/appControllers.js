@@ -88,34 +88,51 @@ async function getAll(req,res, next) {
 	}
 }
 
-function login(req, res, next) {
+async function login(req, res, next) {
 	console.log('Login Request: '+JSON.stringify(req.body));
 	var username = req.body.username;
 	var password = req.body.password;
 
-	userCtrl.fetchUser(db, username)
-		.then(function(data) {
-			if (data != undefined && data.length>0) {
-				data = data[0];
-				console.log('Fetched data: '+JSON.stringify(data))
-				var reqPassword = util.createPassword(data.salt, password);
-				if (reqPassword == data.password) {
-					delete data['salt'];
-					delete data['password'];
-					res .status(200)
-						.json({
-							status: 'success',
-							result: data,
-		          			message: ''
-						});
-				} else {
-					res .status(401)
-						.json({
-							status: 'fail',
-							result: null,
-		          			message: 'Unable to login with provided credentials'
-						});
+	try {
+		let userData = await userCtrl.fetchUser(db, username);
+		if (userData != undefined && userData.length>0) {
+			userData = userData[0];
+			var reqPassword = util.createPassword(userData.salt, password);
+
+			if (reqPassword == userData.password) {
+				delete userData['salt'];
+				delete userData['password']; 
+
+				let ulmData = await mappingCtrl.fetchMapULM(db, 'user_id', userData['id']);
+				let locationData = await locationCtrl.fetchLocation(db, ulmData[0].location_id);
+
+				let usmData = await mappingCtrl.fetchMapUSM(db, 'user_id', userData['id']);
+
+				var idList = '';
+				for (var i = 0; i < usmData.length; i++) {
+					if (idList == '') {
+						idList = '('+usmData[i].stream_id;
+					} else {
+						idList = idList + ', ' + usmData[i].stream_id;
+					}
 				}
+
+				idList = idList + ')';
+
+				let streamData = await streamCtrl.fetch(db, idList);
+
+				response = {
+					user: userData,
+					location: locationData[0],
+					streams: streamData
+				};
+
+				res .status(200)
+					.json({
+						status: 'success',
+						result: data,
+		          		message: ''
+					});
 			} else {
 				res .status(401)
 					.json({
@@ -123,11 +140,19 @@ function login(req, res, next) {
 						result: null,
 		          		message: 'Unable to login with provided credentials'
 					});
-			}			
-		})
-		.catch(function(err){
-			return next(err);
-		});
+			}
+		} else {
+			res .status(401)
+				.json({
+					status: 'fail',
+					result: null,
+		       		message: 'Unable to login with provided credentials'
+				});
+		}	
+	} catch (err) {
+		console.error(err);
+		return next(err);
+	}
 }
 
 function updateProfile(req, res, next){
