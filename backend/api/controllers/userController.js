@@ -29,20 +29,15 @@ function fetch(db, username) {
 	return db.any(fetchQuery);
 }
 
-async function fetchAll(db) {
+function fetchAll(db) {
 	var fetchQuery = "SELECT um.id, um.name, um.email, um.mobile, um.parent_id, um.is_admin, " + 
 					 "um.salt, um.password, um.dt_created, um.dt_modified, um.dt_login, sm.status " + 
 					 "FROM third_eye.user_master AS um " + 
 					 "JOIN third_eye.status_master AS sm ON um.status = sm.id;";	
 
 	console.log("Query : "+fetchQuery);
-	var data;
-	try {
-		data = await db.any(fetchQuery);
-	} catch(err) {
-		console.error(err);
-	}
-	return data;
+	
+	return db.any(fetchQuery);
 }
 
 function update(db, user) {
