@@ -40,7 +40,7 @@ async function register(req, res, next) {
 				stream: streams[i]['stream']
 			}
 
-			let streamInsert = await streamCtrl.insertStream(stream);
+			let streamInsert = await streamCtrl.insertStream(db, stream);
 			streams[i]['id'] = parseInt(streamInsert['id']);
 			console.log("Stream: "+JSON.stringify(streams[i]));
 
