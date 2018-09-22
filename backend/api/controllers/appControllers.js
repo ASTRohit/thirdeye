@@ -9,7 +9,8 @@ var util = require('../utility/util');
 
 async function register(req, res, next) {
 	let request = req.body;
-	
+	console.log("Requqest: "+JSON.stringify(request);
+
 	var user = request.user;
 	var location = request.location;
 	var streams = request.streams;
@@ -18,8 +19,12 @@ async function register(req, res, next) {
 		let userInsert = await userCtrl.insertUser(db, user);
 		user['id'] = parseInt(userInsert['id']);
 
+		console.log("User: "+JSON.stringify(user));
+
 		let locationInsert = await locationCtrl.insertLocation(db, location);
 		location['id'] = parseInt(locationCtrl['id']);
+
+		console.log("Location: "+JSON.stringify(location));
 
 		let ulm = {
 			user_id: user['id'],
@@ -37,6 +42,7 @@ async function register(req, res, next) {
 
 			let streamInsert = await streamCtrl.insertStream(stream);
 			streams[i]['id'] = parseInt(streamInsert['id']);
+			console.log("Stream: "+JSON.stringify(streams[i]));
 
 			let usm = {
 				user_id: user['id'],
