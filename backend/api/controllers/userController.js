@@ -29,6 +29,16 @@ function fetch(db, username) {
 	return db.any(fetchQuery);
 }
 
+async function fetchAll(db) {
+	var fetchQuery = "SELECT um.id, um.name, um.email, um.mobile, um.parent_id, um.is_admin, " + 
+					 "um.salt, um.password, um.dt_created, um.dt_modified, um.dt_login, sm.status " + 
+					 "FROM third_eye.user_master AS um " + 
+					 "JOIN third_eye.status_master AS sm ON um.status = sm.id;";	
+
+	console.log("Query : "+fetchQuery);
+	return await db.any(fetchQuery);
+}
+
 function update(db, user) {
 	var updateQuery='';
 	if (user.password != undefined && user.password != '') {
@@ -52,6 +62,7 @@ function remove(db, id) {
 module.exports = {
 	insertUser: insert,
 	fetchUser: fetch,
+	fetchAllUser: fetchAll,
 	updateUser: update,
 	deleteUser: remove
 };

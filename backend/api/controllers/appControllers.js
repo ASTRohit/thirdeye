@@ -24,6 +24,17 @@ function register(req, res, next) {
 		});
 }
 
+function getAll(req,res, next) {
+	var data = userCtrl.fetchAllUser(db);
+	console.log('Return on Async/Await : '+JSON.stringify(data))
+	res .status(200)
+		.json({
+			status: 'success',
+			result: data,
+		    message: ''
+		});
+}
+
 function login(req, res, next) {
 	console.log('Login Request: '+JSON.stringify(req.body));
 	var username = req.body.username;
@@ -104,5 +115,6 @@ function updateProfile(req, res, next){
 
 module.exports = {
 	authRegister: register,
-	authLogin: login
+	authLogin: login,
+	getUsers: getAll
 };
