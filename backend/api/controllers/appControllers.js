@@ -9,7 +9,7 @@ var util = require('../utility/util');
 
 async function register(req, res, next) {
 	let request = req.body;
-	console.log("Requqest: "+JSON.stringify(request);
+	console.log("Requqest: "+JSON.stringify(request));
 
 	var user = request.user;
 	var location = request.location;
