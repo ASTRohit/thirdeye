@@ -26,7 +26,7 @@ function register(req, res, next) {
 
 function getAll(req,res, next) {
 	try {
-		let data = userCtrl.fetchAllUser(db);
+		let data = await userCtrl.fetchAllUser(db);
 		console.log('Return on Async/Await : '+JSON.stringify(data))
 		res .status(200)
 			.json({
