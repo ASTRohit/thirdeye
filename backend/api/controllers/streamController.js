@@ -7,7 +7,7 @@ function insert(db, stream){
 }
 
 function fetch(db, ids) {	
-	var fetchQuery = 'SELECT * FROM third_eye.stream_master WHERE id IN ' + idList;
+	var fetchQuery = 'SELECT * FROM third_eye.stream_master WHERE id IN ' + ids;
 	
 	console.log("Query : "+fetchQuery);
 	return db.any(fetchQuery);
